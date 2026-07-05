@@ -7,6 +7,32 @@ use memory::Memory;
 use plugins::PluginManager;
 use scheduler::Scheduler;
 
+/// The current lifecycle state of the runtime.
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub enum RuntimeState {
+    /// The runtime has been constructed but not started.
+    #[default]
+    Created,
+    /// Runtime components are being initialized.
+    Starting,
+    /// The runtime is initialized and ready.
+    Running,
+    /// The runtime has been stopped.
+    Stopped,
+}
+
+/// Published when runtime startup begins.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct RuntimeStarted;
+
+/// Published when the runtime is ready.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct RuntimeReady;
+
+/// Published when the runtime stops.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct RuntimeStopped;
+
 /// Owns and coordinates ARIA's foundational runtime components.
 #[derive(Default)]
 pub struct Runtime {
@@ -16,6 +42,7 @@ pub struct Runtime {
     memory: Memory,
     plugin_manager: PluginManager,
     scheduler: Scheduler,
+    state: RuntimeState,
 }
 
 impl Runtime {
@@ -25,13 +52,42 @@ impl Runtime {
     }
 
     /// Starts the runtime synchronously.
-    pub fn start(&self) {
+    pub fn start(&mut self) {
+        if matches!(self.state, RuntimeState::Starting | RuntimeState::Running) {
+            return;
+        }
+
+        self.state = RuntimeState::Starting;
+        self.event_bus.publish(&RuntimeStarted);
+
+        self.audio_engine.initialize();
+        self.plugin_manager.initialize_all();
+        self.agent_registry.initialize();
+
+        self.state = RuntimeState::Running;
+        self.event_bus.publish(&RuntimeReady);
+
         println!(
             "Starting ARIA Runtime...\n\n\
              Loading Event Bus...\n\
              Loading Memory...\n\n\
              Runtime Ready."
         );
+    }
+
+    /// Stops the runtime synchronously.
+    pub fn stop(&mut self) {
+        if self.state == RuntimeState::Stopped {
+            return;
+        }
+
+        self.state = RuntimeState::Stopped;
+        self.event_bus.publish(&RuntimeStopped);
+    }
+
+    /// Returns the current lifecycle state.
+    pub fn state(&self) -> RuntimeState {
+        self.state
     }
 
     /// Returns the runtime's agent registry.
@@ -92,5 +148,93 @@ impl Runtime {
     /// Returns mutable access to the runtime's scheduler.
     pub fn scheduler_mut(&mut self) -> &mut Scheduler {
         &mut self.scheduler
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{Runtime, RuntimeReady, RuntimeStarted, RuntimeState, RuntimeStopped};
+    use plugins::Plugin;
+    use std::sync::{Arc, Mutex};
+
+    struct TestPlugin {
+        initialized: Arc<Mutex<bool>>,
+    }
+
+    impl Plugin for TestPlugin {
+        fn name(&self) -> &str {
+            "test"
+        }
+
+        fn initialize(&mut self) {
+            *self.initialized.lock().unwrap() = true;
+        }
+    }
+
+    #[test]
+    fn transitions_through_the_lifecycle() {
+        let mut runtime = Runtime::new();
+
+        assert_eq!(runtime.state(), RuntimeState::Created);
+
+        runtime.start();
+        assert_eq!(runtime.state(), RuntimeState::Running);
+
+        runtime.stop();
+        assert_eq!(runtime.state(), RuntimeState::Stopped);
+    }
+
+    #[test]
+    fn publishes_lifecycle_events_in_order() {
+        let events = Arc::new(Mutex::new(Vec::new()));
+        let mut runtime = Runtime::new();
+
+        let received = Arc::clone(&events);
+        runtime
+            .event_bus_mut()
+            .subscribe::<RuntimeStarted>(move |_| {
+                received.lock().unwrap().push("started");
+            });
+
+        let received = Arc::clone(&events);
+        runtime.event_bus_mut().subscribe::<RuntimeReady>(move |_| {
+            received.lock().unwrap().push("ready");
+        });
+
+        let received = Arc::clone(&events);
+        runtime
+            .event_bus_mut()
+            .subscribe::<RuntimeStopped>(move |_| {
+                received.lock().unwrap().push("stopped");
+            });
+
+        runtime.start();
+        runtime.stop();
+
+        assert_eq!(*events.lock().unwrap(), ["started", "ready", "stopped"]);
+    }
+
+    #[test]
+    fn initializes_components_and_preserves_pending_jobs() {
+        let plugin_initialized = Arc::new(Mutex::new(false));
+        let job_executed = Arc::new(Mutex::new(false));
+        let mut runtime = Runtime::new();
+
+        runtime.plugin_manager_mut().register(TestPlugin {
+            initialized: Arc::clone(&plugin_initialized),
+        });
+
+        let executed = Arc::clone(&job_executed);
+        runtime.scheduler_mut().schedule(move || {
+            *executed.lock().unwrap() = true;
+        });
+
+        runtime.start();
+
+        assert!(runtime.audio_engine().is_initialized());
+        assert!(runtime.agent_registry().is_initialized());
+        assert!(*plugin_initialized.lock().unwrap());
+        assert_eq!(runtime.scheduler_mut().run_pending(), 1);
+        assert!(*job_executed.lock().unwrap());
     }
 }

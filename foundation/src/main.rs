@@ -1,6 +1,6 @@
 use runtime::Runtime;
 
 fn main() {
-    let runtime = Runtime::new();
+    let mut runtime = Runtime::new();
     runtime.start();
 }
