@@ -1,5 +1,6 @@
 //! Core synchronous runtime for ARIA.
 
+use agents::AgentRegistry;
 use audio::AudioEngine;
 use events::EventBus;
 use memory::Memory;
@@ -9,6 +10,7 @@ use scheduler::Scheduler;
 /// Owns and coordinates ARIA's foundational runtime components.
 #[derive(Default)]
 pub struct Runtime {
+    agent_registry: AgentRegistry,
     audio_engine: AudioEngine,
     event_bus: EventBus,
     memory: Memory,
@@ -30,6 +32,16 @@ impl Runtime {
              Loading Memory...\n\n\
              Runtime Ready."
         );
+    }
+
+    /// Returns the runtime's agent registry.
+    pub fn agent_registry(&self) -> &AgentRegistry {
+        &self.agent_registry
+    }
+
+    /// Returns mutable access to the runtime's agent registry.
+    pub fn agent_registry_mut(&mut self) -> &mut AgentRegistry {
+        &mut self.agent_registry
     }
 
     /// Returns the runtime's audio engine.

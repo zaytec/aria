@@ -4,6 +4,7 @@ version = "0.0.1"
 edition = "2021"
 
 [dependencies]
+agents = { path = "../agents" }
 audio = { path = "../audio" }
 events = { path = "../events" }
 memory = { path = "../memory" }
