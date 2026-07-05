@@ -1,3 +1,3 @@
 [workspace]
-members = ["events", "foundation"]
+members = ["events", "foundation", "memory", "runtime"]
 resolver = "2"
