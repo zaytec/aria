@@ -12,12 +12,23 @@ pub trait Agent {
 #[derive(Default)]
 pub struct AgentRegistry {
     agents: BTreeMap<String, Box<dyn Agent>>,
+    initialized: bool,
 }
 
 impl AgentRegistry {
     /// Creates an empty agent registry.
     pub fn new() -> Self {
         Self::default()
+    }
+
+    /// Initializes the agent registry.
+    pub fn initialize(&mut self) {
+        self.initialized = true;
+    }
+
+    /// Returns whether the registry has been initialized.
+    pub fn is_initialized(&self) -> bool {
+        self.initialized
     }
 
     /// Registers an agent by name.

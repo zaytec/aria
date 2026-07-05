@@ -17,6 +17,11 @@ impl AudioEngine {
         self.initialized = true;
     }
 
+    /// Returns whether the audio engine has been initialized.
+    pub fn is_initialized(&self) -> bool {
+        self.initialized
+    }
+
     /// Plays a named sound synchronously.
     pub fn play(&self, sound: &str) {
         println!("Playing sound: {sound}");
@@ -33,7 +38,7 @@ mod tests {
 
         engine.initialize();
 
-        assert!(engine.initialized);
+        assert!(engine.is_initialized());
     }
 
     #[test]
