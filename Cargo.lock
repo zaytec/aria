@@ -3,5 +3,12 @@
 version = 4
 
 [[package]]
+name = "events"
+version = "0.0.1"
+
+[[package]]
 name = "foundation"
 version = "0.0.1"
+dependencies = [
+ "events",
+]
