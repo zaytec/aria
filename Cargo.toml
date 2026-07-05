@@ -2,6 +2,7 @@
 members = [
     "agents",
     "audio",
+    "commands",
     "events",
     "foundation",
     "memory",

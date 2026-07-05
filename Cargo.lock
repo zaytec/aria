@@ -11,6 +11,10 @@ name = "audio"
 version = "0.0.1"
 
 [[package]]
+name = "commands"
+version = "0.0.1"
+
+[[package]]
 name = "events"
 version = "0.0.1"
 
@@ -35,6 +39,7 @@ version = "0.0.1"
 dependencies = [
  "agents",
  "audio",
+ "commands",
  "events",
  "memory",
  "plugins",
