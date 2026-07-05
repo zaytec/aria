@@ -3,6 +3,10 @@
 version = 4
 
 [[package]]
+name = "audio"
+version = "0.0.1"
+
+[[package]]
 name = "events"
 version = "0.0.1"
 
@@ -25,6 +29,7 @@ version = "0.0.1"
 name = "runtime"
 version = "0.0.1"
 dependencies = [
+ "audio",
  "events",
  "memory",
  "plugins",
