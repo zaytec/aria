@@ -1,5 +1,6 @@
 //! Core synchronous runtime for ARIA.
 
+use audio::AudioEngine;
 use events::EventBus;
 use memory::Memory;
 use plugins::PluginManager;
@@ -8,6 +9,7 @@ use scheduler::Scheduler;
 /// Owns and coordinates ARIA's foundational runtime components.
 #[derive(Default)]
 pub struct Runtime {
+    audio_engine: AudioEngine,
     event_bus: EventBus,
     memory: Memory,
     plugin_manager: PluginManager,
@@ -28,6 +30,16 @@ impl Runtime {
              Loading Memory...\n\n\
              Runtime Ready."
         );
+    }
+
+    /// Returns the runtime's audio engine.
+    pub fn audio_engine(&self) -> &AudioEngine {
+        &self.audio_engine
+    }
+
+    /// Returns mutable access to the runtime's audio engine.
+    pub fn audio_engine_mut(&mut self) -> &mut AudioEngine {
+        &mut self.audio_engine
     }
 
     /// Returns the runtime's event bus.
