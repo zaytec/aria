@@ -11,4 +11,9 @@ name = "foundation"
 version = "0.0.1"
 dependencies = [
  "events",
+ "memory",
 ]
+
+[[package]]
+name = "memory"
+version = "0.0.1"
