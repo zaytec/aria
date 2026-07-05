@@ -6,6 +6,7 @@ edition = "2021"
 [dependencies]
 agents = { path = "../agents" }
 audio = { path = "../audio" }
+commands = { path = "../commands" }
 events = { path = "../events" }
 memory = { path = "../memory" }
 plugins = { path = "../plugins" }

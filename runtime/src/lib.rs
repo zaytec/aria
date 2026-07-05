@@ -2,6 +2,7 @@
 
 use agents::AgentRegistry;
 use audio::AudioEngine;
+use commands::CommandManager;
 use events::EventBus;
 use memory::Memory;
 use plugins::PluginManager;
@@ -38,6 +39,7 @@ pub struct RuntimeStopped;
 pub struct Runtime {
     agent_registry: AgentRegistry,
     audio_engine: AudioEngine,
+    command_manager: CommandManager,
     event_bus: EventBus,
     memory: Memory,
     plugin_manager: PluginManager,
@@ -108,6 +110,16 @@ impl Runtime {
     /// Returns mutable access to the runtime's audio engine.
     pub fn audio_engine_mut(&mut self) -> &mut AudioEngine {
         &mut self.audio_engine
+    }
+
+    /// Returns the runtime's command manager.
+    pub fn command_manager(&self) -> &CommandManager {
+        &self.command_manager
+    }
+
+    /// Returns mutable access to the runtime's command manager.
+    pub fn command_manager_mut(&mut self) -> &mut CommandManager {
+        &mut self.command_manager
     }
 
     /// Returns the runtime's event bus.
