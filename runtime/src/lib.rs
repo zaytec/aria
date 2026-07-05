@@ -2,12 +2,14 @@
 
 use events::EventBus;
 use memory::Memory;
+use scheduler::Scheduler;
 
 /// Owns and coordinates ARIA's foundational runtime components.
 #[derive(Default)]
 pub struct Runtime {
     event_bus: EventBus,
     memory: Memory,
+    scheduler: Scheduler,
 }
 
 impl Runtime {
@@ -44,5 +46,15 @@ impl Runtime {
     /// Returns mutable access to the runtime's memory store.
     pub fn memory_mut(&mut self) -> &mut Memory {
         &mut self.memory
+    }
+
+    /// Returns the runtime's scheduler.
+    pub fn scheduler(&self) -> &Scheduler {
+        &self.scheduler
+    }
+
+    /// Returns mutable access to the runtime's scheduler.
+    pub fn scheduler_mut(&mut self) -> &mut Scheduler {
+        &mut self.scheduler
     }
 }
