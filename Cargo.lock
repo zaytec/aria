@@ -23,4 +23,9 @@ version = "0.0.1"
 dependencies = [
  "events",
  "memory",
+ "scheduler",
 ]
+
+[[package]]
+name = "scheduler"
+version = "0.0.1"
