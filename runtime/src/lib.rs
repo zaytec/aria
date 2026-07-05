@@ -2,6 +2,7 @@
 
 use events::EventBus;
 use memory::Memory;
+use plugins::PluginManager;
 use scheduler::Scheduler;
 
 /// Owns and coordinates ARIA's foundational runtime components.
@@ -9,6 +10,7 @@ use scheduler::Scheduler;
 pub struct Runtime {
     event_bus: EventBus,
     memory: Memory,
+    plugin_manager: PluginManager,
     scheduler: Scheduler,
 }
 
@@ -46,6 +48,16 @@ impl Runtime {
     /// Returns mutable access to the runtime's memory store.
     pub fn memory_mut(&mut self) -> &mut Memory {
         &mut self.memory
+    }
+
+    /// Returns the runtime's plugin manager.
+    pub fn plugin_manager(&self) -> &PluginManager {
+        &self.plugin_manager
+    }
+
+    /// Returns mutable access to the runtime's plugin manager.
+    pub fn plugin_manager_mut(&mut self) -> &mut PluginManager {
+        &mut self.plugin_manager
     }
 
     /// Returns the runtime's scheduler.

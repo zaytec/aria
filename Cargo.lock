@@ -18,11 +18,16 @@ name = "memory"
 version = "0.0.1"
 
 [[package]]
+name = "plugins"
+version = "0.0.1"
+
+[[package]]
 name = "runtime"
 version = "0.0.1"
 dependencies = [
  "events",
  "memory",
+ "plugins",
  "scheduler",
 ]
 
