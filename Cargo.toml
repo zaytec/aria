@@ -5,6 +5,7 @@ members = [
     "audio",
     "commands",
     "events",
+    "filesystem",
     "foundation",
     "memory",
     "plugins",
