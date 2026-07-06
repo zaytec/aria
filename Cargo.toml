@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "agents",
+    "applications",
     "audio",
     "commands",
     "events",

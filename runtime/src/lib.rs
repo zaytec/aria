@@ -1,6 +1,7 @@
 //! Core synchronous runtime for ARIA.
 
 use agents::AgentRegistry;
+use applications::ApplicationManager;
 use audio::AudioEngine;
 use commands::CommandManager;
 use events::EventBus;
@@ -39,6 +40,7 @@ pub struct RuntimeStopped;
 #[derive(Default)]
 pub struct Runtime {
     agent_registry: AgentRegistry,
+    application_manager: ApplicationManager,
     audio_engine: AudioEngine,
     command_manager: CommandManager,
     event_bus: EventBus,
@@ -102,6 +104,16 @@ impl Runtime {
     /// Returns mutable access to the runtime's agent registry.
     pub fn agent_registry_mut(&mut self) -> &mut AgentRegistry {
         &mut self.agent_registry
+    }
+
+    /// Returns the runtime's application manager.
+    pub fn application_manager(&self) -> &ApplicationManager {
+        &self.application_manager
+    }
+
+    /// Returns mutable access to the runtime's application manager.
+    pub fn application_manager_mut(&mut self) -> &mut ApplicationManager {
+        &mut self.application_manager
     }
 
     /// Returns the runtime's audio engine.
