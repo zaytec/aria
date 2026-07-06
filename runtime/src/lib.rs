@@ -7,6 +7,7 @@ use events::EventBus;
 use memory::Memory;
 use plugins::PluginManager;
 use scheduler::Scheduler;
+use tools::ToolManager;
 
 /// The current lifecycle state of the runtime.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
@@ -45,6 +46,7 @@ pub struct Runtime {
     plugin_manager: PluginManager,
     scheduler: Scheduler,
     state: RuntimeState,
+    tool_manager: ToolManager,
 }
 
 impl Runtime {
@@ -160,6 +162,16 @@ impl Runtime {
     /// Returns mutable access to the runtime's scheduler.
     pub fn scheduler_mut(&mut self) -> &mut Scheduler {
         &mut self.scheduler
+    }
+
+    /// Returns the runtime's tool manager.
+    pub fn tool_manager(&self) -> &ToolManager {
+        &self.tool_manager
+    }
+
+    /// Returns mutable access to the runtime's tool manager.
+    pub fn tool_manager_mut(&mut self) -> &mut ToolManager {
+        &mut self.tool_manager
     }
 }
 

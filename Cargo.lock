@@ -44,8 +44,13 @@ dependencies = [
  "memory",
  "plugins",
  "scheduler",
+ "tools",
 ]
 
 [[package]]
 name = "scheduler"
+version = "0.0.1"
+
+[[package]]
+name = "tools"
 version = "0.0.1"

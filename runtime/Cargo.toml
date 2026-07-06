@@ -11,3 +11,4 @@ events = { path = "../events" }
 memory = { path = "../memory" }
 plugins = { path = "../plugins" }
 scheduler = { path = "../scheduler" }
+tools = { path = "../tools" }
