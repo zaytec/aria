@@ -9,6 +9,7 @@ applications = { path = "../applications" }
 audio = { path = "../audio" }
 commands = { path = "../commands" }
 events = { path = "../events" }
+filesystem = { path = "../filesystem" }
 memory = { path = "../memory" }
 plugins = { path = "../plugins" }
 scheduler = { path = "../scheduler" }

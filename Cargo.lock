@@ -23,6 +23,10 @@ name = "events"
 version = "0.0.1"
 
 [[package]]
+name = "filesystem"
+version = "0.0.1"
+
+[[package]]
 name = "foundation"
 version = "0.0.1"
 dependencies = [
@@ -46,6 +50,7 @@ dependencies = [
  "audio",
  "commands",
  "events",
+ "filesystem",
  "memory",
  "plugins",
  "scheduler",

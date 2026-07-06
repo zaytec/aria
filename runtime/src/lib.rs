@@ -5,6 +5,7 @@ use applications::ApplicationManager;
 use audio::AudioEngine;
 use commands::CommandManager;
 use events::EventBus;
+use filesystem::FileSystem;
 use memory::Memory;
 use plugins::PluginManager;
 use scheduler::Scheduler;
@@ -44,6 +45,7 @@ pub struct Runtime {
     audio_engine: AudioEngine,
     command_manager: CommandManager,
     event_bus: EventBus,
+    filesystem: FileSystem,
     memory: Memory,
     plugin_manager: PluginManager,
     scheduler: Scheduler,
@@ -144,6 +146,16 @@ impl Runtime {
     /// Returns mutable access to the runtime's event bus.
     pub fn event_bus_mut(&mut self) -> &mut EventBus {
         &mut self.event_bus
+    }
+
+    /// Returns the runtime's virtual file system.
+    pub fn filesystem(&self) -> &FileSystem {
+        &self.filesystem
+    }
+
+    /// Returns mutable access to the runtime's virtual file system.
+    pub fn filesystem_mut(&mut self) -> &mut FileSystem {
+        &mut self.filesystem
     }
 
     /// Returns the runtime's memory store.
