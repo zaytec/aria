@@ -12,6 +12,7 @@ members = [
     "plugins",
     "runtime",
     "scheduler",
+    "services",
     "tools",
 ]
 resolver = "2"

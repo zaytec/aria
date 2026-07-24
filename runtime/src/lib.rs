@@ -10,6 +10,7 @@ use ipc::MessageBus;
 use memory::Memory;
 use plugins::PluginManager;
 use scheduler::Scheduler;
+use services::ServiceManager;
 use tools::ToolManager;
 
 /// The current lifecycle state of the runtime.
@@ -51,6 +52,7 @@ pub struct Runtime {
     memory: Memory,
     plugin_manager: PluginManager,
     scheduler: Scheduler,
+    service_manager: ServiceManager,
     state: RuntimeState,
     tool_manager: ToolManager,
 }
@@ -198,6 +200,16 @@ impl Runtime {
     /// Returns mutable access to the runtime's scheduler.
     pub fn scheduler_mut(&mut self) -> &mut Scheduler {
         &mut self.scheduler
+    }
+
+    /// Returns the runtime's service manager.
+    pub fn service_manager(&self) -> &ServiceManager {
+        &self.service_manager
+    }
+
+    /// Returns mutable access to the runtime's service manager.
+    pub fn service_manager_mut(&mut self) -> &mut ServiceManager {
+        &mut self.service_manager
     }
 
     /// Returns the runtime's tool manager.

@@ -14,4 +14,5 @@ ipc = { path = "../ipc" }
 memory = { path = "../memory" }
 plugins = { path = "../plugins" }
 scheduler = { path = "../scheduler" }
+services = { path = "../services" }
 tools = { path = "../tools" }
