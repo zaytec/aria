@@ -10,6 +10,7 @@ audio = { path = "../audio" }
 commands = { path = "../commands" }
 events = { path = "../events" }
 filesystem = { path = "../filesystem" }
+ipc = { path = "../ipc" }
 memory = { path = "../memory" }
 plugins = { path = "../plugins" }
 scheduler = { path = "../scheduler" }

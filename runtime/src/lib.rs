@@ -6,6 +6,7 @@ use audio::AudioEngine;
 use commands::CommandManager;
 use events::EventBus;
 use filesystem::FileSystem;
+use ipc::MessageBus;
 use memory::Memory;
 use plugins::PluginManager;
 use scheduler::Scheduler;
@@ -46,6 +47,7 @@ pub struct Runtime {
     command_manager: CommandManager,
     event_bus: EventBus,
     filesystem: FileSystem,
+    message_bus: MessageBus,
     memory: Memory,
     plugin_manager: PluginManager,
     scheduler: Scheduler,
@@ -156,6 +158,16 @@ impl Runtime {
     /// Returns mutable access to the runtime's virtual file system.
     pub fn filesystem_mut(&mut self) -> &mut FileSystem {
         &mut self.filesystem
+    }
+
+    /// Returns the runtime's IPC message bus.
+    pub fn message_bus(&self) -> &MessageBus {
+        &self.message_bus
+    }
+
+    /// Returns mutable access to the runtime's IPC message bus.
+    pub fn message_bus_mut(&mut self) -> &mut MessageBus {
+        &mut self.message_bus
     }
 
     /// Returns the runtime's memory store.
@@ -284,5 +296,24 @@ mod tests {
         assert!(*plugin_initialized.lock().unwrap());
         assert_eq!(runtime.scheduler_mut().run_pending(), 1);
         assert!(*job_executed.lock().unwrap());
+    }
+
+    #[test]
+    fn owns_a_single_ipc_message_bus() {
+        let mut runtime = Runtime::new();
+
+        runtime.message_bus_mut().register_process("sender");
+        runtime.message_bus_mut().register_process("receiver");
+        runtime
+            .message_bus_mut()
+            .send("sender", "receiver", b"hello".to_vec())
+            .unwrap();
+
+        let received = runtime
+            .message_bus_mut()
+            .receive(&ipc::ProcessId::new("receiver"))
+            .unwrap();
+
+        assert_eq!(received.payload(), b"hello");
     }
 }

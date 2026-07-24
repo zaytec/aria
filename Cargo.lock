@@ -34,6 +34,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "ipc"
+version = "0.0.1"
+
+[[package]]
 name = "memory"
 version = "0.0.1"
 
@@ -51,6 +55,7 @@ dependencies = [
  "commands",
  "events",
  "filesystem",
+ "ipc",
  "memory",
  "plugins",
  "scheduler",
