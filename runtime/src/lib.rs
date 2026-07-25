@@ -6,9 +6,11 @@ use audio::AudioEngine;
 use commands::CommandManager;
 use events::EventBus;
 use filesystem::FileSystem;
+use ipc::MessageBus;
 use memory::Memory;
 use plugins::PluginManager;
 use scheduler::Scheduler;
+use services::ServiceManager;
 use tools::ToolManager;
 
 /// The current lifecycle state of the runtime.
@@ -46,9 +48,11 @@ pub struct Runtime {
     command_manager: CommandManager,
     event_bus: EventBus,
     filesystem: FileSystem,
+    message_bus: MessageBus,
     memory: Memory,
     plugin_manager: PluginManager,
     scheduler: Scheduler,
+    service_manager: ServiceManager,
     state: RuntimeState,
     tool_manager: ToolManager,
 }
@@ -158,6 +162,16 @@ impl Runtime {
         &mut self.filesystem
     }
 
+    /// Returns the runtime's IPC message bus.
+    pub fn message_bus(&self) -> &MessageBus {
+        &self.message_bus
+    }
+
+    /// Returns mutable access to the runtime's IPC message bus.
+    pub fn message_bus_mut(&mut self) -> &mut MessageBus {
+        &mut self.message_bus
+    }
+
     /// Returns the runtime's memory store.
     pub fn memory(&self) -> &Memory {
         &self.memory
@@ -186,6 +200,16 @@ impl Runtime {
     /// Returns mutable access to the runtime's scheduler.
     pub fn scheduler_mut(&mut self) -> &mut Scheduler {
         &mut self.scheduler
+    }
+
+    /// Returns the runtime's service manager.
+    pub fn service_manager(&self) -> &ServiceManager {
+        &self.service_manager
+    }
+
+    /// Returns mutable access to the runtime's service manager.
+    pub fn service_manager_mut(&mut self) -> &mut ServiceManager {
+        &mut self.service_manager
     }
 
     /// Returns the runtime's tool manager.
@@ -284,5 +308,24 @@ mod tests {
         assert!(*plugin_initialized.lock().unwrap());
         assert_eq!(runtime.scheduler_mut().run_pending(), 1);
         assert!(*job_executed.lock().unwrap());
+    }
+
+    #[test]
+    fn owns_a_single_ipc_message_bus() {
+        let mut runtime = Runtime::new();
+
+        runtime.message_bus_mut().register_process("sender");
+        runtime.message_bus_mut().register_process("receiver");
+        runtime
+            .message_bus_mut()
+            .send("sender", "receiver", b"hello".to_vec())
+            .unwrap();
+
+        let received = runtime
+            .message_bus_mut()
+            .receive(&ipc::ProcessId::new("receiver"))
+            .unwrap();
+
+        assert_eq!(received.payload(), b"hello");
     }
 }

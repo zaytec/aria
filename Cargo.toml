@@ -7,10 +7,12 @@ members = [
     "events",
     "filesystem",
     "foundation",
+    "ipc",
     "memory",
     "plugins",
     "runtime",
     "scheduler",
+    "services",
     "tools",
 ]
 resolver = "2"
