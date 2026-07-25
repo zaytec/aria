@@ -8,6 +8,7 @@ use events::EventBus;
 use filesystem::FileSystem;
 use ipc::MessageBus;
 use memory::Memory;
+use packages::PackageManager;
 use plugins::PluginManager;
 use scheduler::Scheduler;
 use services::ServiceManager;
@@ -50,6 +51,7 @@ pub struct Runtime {
     filesystem: FileSystem,
     message_bus: MessageBus,
     memory: Memory,
+    package_manager: PackageManager,
     plugin_manager: PluginManager,
     scheduler: Scheduler,
     service_manager: ServiceManager,
@@ -180,6 +182,14 @@ impl Runtime {
     /// Returns mutable access to the runtime's memory store.
     pub fn memory_mut(&mut self) -> &mut Memory {
         &mut self.memory
+    }
+
+    pub fn package_manager(&self) -> &PackageManager {
+        &self.package_manager
+    }
+
+    pub fn package_manager_mut(&mut self) -> &mut PackageManager {
+        &mut self.package_manager
     }
 
     /// Returns the runtime's plugin manager.
