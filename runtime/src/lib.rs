@@ -4,6 +4,7 @@ use agents::AgentRegistry;
 use applications::ApplicationManager;
 use audio::AudioEngine;
 use commands::CommandManager;
+use configuration::ConfigurationManager;
 use events::EventBus;
 use filesystem::FileSystem;
 use ipc::MessageBus;
@@ -47,6 +48,7 @@ pub struct Runtime {
     application_manager: ApplicationManager,
     audio_engine: AudioEngine,
     command_manager: CommandManager,
+    configuration_manager: ConfigurationManager,
     event_bus: EventBus,
     filesystem: FileSystem,
     message_bus: MessageBus,
@@ -142,6 +144,14 @@ impl Runtime {
     /// Returns mutable access to the runtime's command manager.
     pub fn command_manager_mut(&mut self) -> &mut CommandManager {
         &mut self.command_manager
+    }
+
+    pub fn configuration_manager(&self) -> &ConfigurationManager {
+        &self.configuration_manager
+    }
+
+    pub fn configuration_manager_mut(&mut self) -> &mut ConfigurationManager {
+        &mut self.configuration_manager
     }
 
     /// Returns the runtime's event bus.
