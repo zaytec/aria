@@ -8,6 +8,7 @@ agents = { path = "../agents" }
 applications = { path = "../applications" }
 audio = { path = "../audio" }
 commands = { path = "../commands" }
+configuration = { path = "../configuration" }
 events = { path = "../events" }
 filesystem = { path = "../filesystem" }
 ipc = { path = "../ipc" }

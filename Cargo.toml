@@ -4,6 +4,7 @@ members = [
     "applications",
     "audio",
     "commands",
+    "configuration",
     "events",
     "filesystem",
     "foundation",

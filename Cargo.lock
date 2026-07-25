@@ -19,6 +19,10 @@ name = "commands"
 version = "0.0.1"
 
 [[package]]
+name = "configuration"
+version = "0.0.1"
+
+[[package]]
 name = "events"
 version = "0.0.1"
 
@@ -57,6 +61,7 @@ dependencies = [
  "applications",
  "audio",
  "commands",
+ "configuration",
  "events",
  "filesystem",
  "ipc",
