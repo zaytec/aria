@@ -9,6 +9,7 @@ members = [
     "foundation",
     "ipc",
     "memory",
+    "packages",
     "plugins",
     "runtime",
     "scheduler",

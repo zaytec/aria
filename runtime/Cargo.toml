@@ -12,6 +12,7 @@ events = { path = "../events" }
 filesystem = { path = "../filesystem" }
 ipc = { path = "../ipc" }
 memory = { path = "../memory" }
+packages = { path = "../packages" }
 plugins = { path = "../plugins" }
 scheduler = { path = "../scheduler" }
 tools = { path = "../tools" }
